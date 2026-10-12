@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Surendra Shukla</title>
+  <meta name="description" content="Surendra Shukla — ML platform engineering, Rust, systems programming and embedded systems.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c2410c'/><text x='50' y='68' font-size='52' font-family='monospace' text-anchor='middle' fill='white'>ss</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --muted: #57534e;
+      --faint: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #c2410c;
+      --accent-soft: #fff1e8;
+      --shadow: 0 1px 2px rgba(28,25,23,.04), 0 4px 16px rgba(28,25,23,.04);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #12110f;
+        --surface: #1c1a17;
+        --text: #f5f5f4;
+        --muted: #a8a29e;
+        --faint: #78716c;
+        --border: #2e2b27;
+        --accent: #fb923c;
+        --accent-soft: #2a1d14;
+        --shadow: none;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #12110f;
+      --surface: #1c1a17;
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #78716c;
+      --border: #2e2b27;
+      --accent: #fb923c;
+      --accent-soft: #2a1d14;
+      --shadow: none;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 Inter, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+    /* nav */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 12px; }
+    .brand { font-weight: 600; text-decoration: none; font-size: 15px; }
+    .brand span { color: var(--accent); }
+    .links { display: flex; gap: 20px; align-items: center; font-size: 14px; }
+    .links a { text-decoration: none; color: var(--muted); }
+    .links a:hover { color: var(--text); }
+    #theme {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 14px;
+    }
+    @media (max-width: 560px) { .links a.hide-sm { display: none; } }
+
+    /* hero */
+    header.hero { padding: 88px 0 56px; }
+    .eyebrow { color: var(--accent); font-size: 13px; letter-spacing: .02em; margin: 0 0 16px; }
+    h1 { font-size: clamp(36px, 7vw, 56px); line-height: 1.08; letter-spacing: -.03em; margin: 0 0 20px; font-weight: 700; }
+    .lede { font-size: 19px; color: var(--muted); max-width: 620px; margin: 0 0 28px; }
+    .lede strong { color: var(--text); font-weight: 600; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 500;
+      text-decoration: none; border: 1px solid var(--border); background: var(--surface);
+    }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .btn:hover { border-color: var(--accent); }
+    .btn svg { width: 16px; height: 16px; }
+    .loc { color: var(--faint); font-size: 14px; margin-top: 24px; }
+
+    /* sections */
+    section { padding: 48px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--faint); font-weight: 600; margin: 0 0 24px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 13px; padding: 6px 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+    }
+
+    /* featured */
+    .featured {
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 28px; box-shadow: var(--shadow); text-decoration: none; margin-bottom: 16px;
+    }
+    .featured:hover { border-color: var(--accent); }
+    .featured h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.01em; }
+    .featured p { margin: 0 0 16px; color: var(--muted); }
+    .featured .go { color: var(--accent); font-weight: 500; font-size: 14px; }
+    .toc { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 16px 18px; border: 1px solid var(--border); }
+    .toc div { padding: 3px 0; }
+    .toc b { color: var(--accent); font-weight: 500; margin-right: 8px; }
+    @media (max-width: 680px) { .featured { grid-template-columns: 1fr; padding: 22px; } }
+
+    /* project groups */
+    .group { margin-bottom: 36px; }
+    .group:last-child { margin-bottom: 0; }
+    .group h3 { font-size: 17px; margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
+    .group h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      display: block; text-decoration: none; padding: 16px 18px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border); transition: border-color .15s, transform .15s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .card .name { font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; gap: 8px; }
+    .card .lang { font-size: 12px; color: var(--faint); font-weight: 400; white-space: nowrap; }
+    .card p { margin: 6px 0 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 0 48px; color: var(--faint); font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <a class="brand mono" href="#">surendra<span>.</span>shukla</a>
+      <div class="links">
+        <a href="#focus" class="hide-sm">Focus</a>
+        <a href="#writing">Writing</a>
+        <a href="#projects">Projects</a>
+        <button id="theme" aria-label="Toggle color theme" title="Toggle theme">◐</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <header class="hero">
+      <p class="eyebrow mono">// hello, world</p>
+      <h1>Surendra Shukla</h1>
+      <p class="lede">
+        Engineer moving from <strong>cloud &amp; data</strong> into <strong>ML platform engineering</strong>.
+        Off the clock I write <strong>Rust</strong> close to the metal&nbsp;— a hobby operating system,
+        assembly experiments, and flight controllers for drones.
+      </p>
+      <div class="meta">
+        <a class="btn primary" href="https://github.com/shukla-surendra">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a class="btn" href="https://shukla-surendra.github.io/rust_exploration/">Rust tutorial →</a>
+      </div>
+      <p class="loc">📍 Noida, India</p>
+    </header>
+
+    <section id="focus">
+      <h2>What I work with</h2>
+      <div class="tags">
+        <span class="tag">ML Platform Engineering</span>
+        <span class="tag">LLMOps / MLOps</span>
+        <span class="tag">Cloud (AWS, CDK)</span>
+        <span class="tag">Data &amp; Spark</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag">Python</span>
+        <span class="tag">Rust</span>
+        <span class="tag">Systems Programming</span>
+        <span class="tag">OS Development</span>
+        <span class="tag">Assembly</span>
+        <span class="tag">Embedded / ESP32</span>
+      </div>
+    </section>
+
+    <section id="writing">
+      <h2>Writing</h2>
+      <a class="featured" href="https://shukla-surendra.github.io/rust_exploration/">
+        <div>
+          <h3>Rust Exploration</h3>
+          <p>A hands-on Rust book, from syntax and ownership through async and production Rust, down to assembly, embedded and OS development.</p>
+          <span class="go">Read the book →</span>
+        </div>
+        <div class="toc mono">
+          <div><b>01</b>Rust Refresher Workbook</div>
+          <div><b>02</b>Foundation Deep Dives</div>
+          <div><b>03</b>Async Rust</div>
+          <div><b>04</b>Productionizing Rust</div>
+          <div><b>05</b>Systems from First Principles</div>
+          <div><b>06</b>OxideOS · Assembly · Embedded</div>
+        </div>
+      </a>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+
+      <div class="group">
+        <h3><span class="dot"></span>Systems &amp; operating systems</h3>
+        <div class="grid">
+          <a class="card" href="https://github.com/shukla-surendra/OxideOS">
+            <div class="name">OxideOS <span class="lang mono">Rust</span></div>
+            <p>A hobby operating system written in Rust.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/rust_exploration">
+            <div class="name">rust_exploration <span class="lang mono">Rust</span></div>
+            <p>Example projects and source for the Rust Exploration book.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/os-arm-exploration">
+            <div class="name">os-arm-exploration <span class="lang mono">Rust</span></div>
+            <p>Exploring OS development on ARM.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/rust_dsa_problems">
+            <div class="name">rust_dsa_problems <span class="lang mono">Rust</span></div>
+            <p>Data structures and algorithms problems in Rust.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3><span class="dot"></span>Embedded</h3>
+        <div class="grid">
+          <a class="card" href="https://github.com/shukla-surendra/esp32_flight_controller">
+            <div class="name">esp32_flight_controller <span class="lang mono">C++</span></div>
+            <p>A drone flight controller for the ESP32.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/esc_calibration">
+            <div class="name">esc_calibration <span class="lang mono">C++</span></div>
+            <p>Calibration for electronic speed controllers.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3><span class="dot"></span>ML &amp; LLMs</h3>
+        <div class="grid">
+          <a class="card" href="https://github.com/shukla-surendra/mini-llms-playground">
+            <div class="name">mini-llms-playground <span class="lang mono">Python</span></div>
+            <p>Exploring LLM training and fine-tuning.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/saturpy">
+            <div class="name">saturpy <span class="lang mono">Python</span></div>
+            <p>A Python library for machine learning and artificial neural networks.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/dbx-mlflow-experiment">
+            <div class="name">dbx-mlflow-experiment <span class="lang mono">Notebook</span></div>
+            <p>Experiment tracking with MLflow.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/spark-unity">
+            <div class="name">spark-unity <span class="lang mono">Notebook</span></div>
+            <p>Spark Docker setup with Unity Catalog integration.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3><span class="dot"></span>Cloud &amp; tooling</h3>
+        <div class="grid">
+          <a class="card" href="https://github.com/shukla-surendra/aws-chat">
+            <div class="name">aws-chat <span class="lang mono">Python</span></div>
+            <p>A WebSocket chat on AWS API Gateway, built with Python and CDK.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/cdk2-python-multiaccount">
+            <div class="name">cdk2-python-multiaccount <span class="lang mono">Python</span></div>
+            <p>Multi-account deployments with AWS CDK v2 in Python.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/shdeploy">
+            <div class="name">shdeploy <span class="lang mono">Python</span></div>
+            <p>A CLI that extends some AWS CLI commands with more dynamic, customizable behavior.</p>
+          </a>
+          <a class="card" href="https://github.com/shukla-surendra/productify_ext">
+            <div class="name">productify_ext <span class="lang mono">JavaScript</span></div>
+            <p>A Chrome extension that tracks time spent on different websites.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="yr">2026</span> Surendra Shukla</span>
+      <a href="https://github.com/shukla-surendra">github.com/shukla-surendra</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    (function () {
+      var root = document.documentElement, btn = document.getElementById('theme');
+      try { var saved = localStorage.getItem('theme'); if (saved) root.dataset.theme = saved; } catch (e) {}
+      btn.addEventListener('click', function () {
+        var dark = root.dataset.theme ? root.dataset.theme === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        root.dataset.theme = dark ? 'light' : 'dark';
+        try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+</html>
